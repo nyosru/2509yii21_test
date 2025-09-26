@@ -30,10 +30,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at'], 'default', 'value' => null],
+//            [['created_at'], 'default', 'value' => null],
             [['name', 'price'], 'required'],
             [['price'], 'number'],
-            [['created_at'], 'integer'],
+//            [['created_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -47,8 +47,15 @@ class Product extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'price' => 'Price',
-            'created_at' => 'Created At',
+//            'created_at' => 'Created At',
         ];
     }
-
+    public function beforeSave($insert)
+    {
+        if ($insert && empty($this->time)) {
+//            $this->created_at = date('Y-m-d H:i:s'); // или time() если поле int
+            $this->created_at = time(); // или time() если поле int
+        }
+        return parent::beforeSave($insert);
+    }
 }
